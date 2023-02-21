@@ -1,0 +1,14 @@
+wandb
+torch
+transformers
+networkx
+sentencepiece
+sacrebleu
+datasets
+accelerate
+tqdm
+omegaconf
+tensorboard
+nltk
+contractions
+rouge-score==0.0.4 #required: newer versions fail
