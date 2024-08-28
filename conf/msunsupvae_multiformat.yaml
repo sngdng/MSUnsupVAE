@@ -1,0 +1,40 @@
+seed: 1
+model: "t5-small"
+specify_target_with_prefix: True  # specify target either as a prefix to the encoder input, or with the decoder_start_token_id
+fast_dev_run: False
+
+# training
+mode: "both_unsup"
+epochs: 10
+lr: 1.0e-4
+lr_scheduler: "linear"  # can also be 'constant'
+batch_size_train: 20
+max_grad_norm: 1.0
+dataset_name: "multiformat"
+# -- specific to VAE
+vae:
+  model: "im_dis_style_vae"  # 'non_vae', 'full_vae' or 'style_vae' or 'dis_style_vae'
+  cycle_loss: "dis"  # 'single' or 'dual', the cycle VAE loss (only for the 'full_vae')
+  use_style_token: True  # (only for the 'style_vae')
+  reg: "mmd"  # 'kl' for a regular VAE, 'mmd' for a MMD-VAE, the regularisation loss
+  beta: 10.  # coefficient in front of the VAE regularisation loss (KL or MMD)
+  beta_n_cycle: -1  # number of cycles for the beta-VAE schedule (-1 for regular VAE: constant beta=1)
+  s_x_dim: 1
+# -- specific to unsupervised
+generate_method: "top_k"  # 'greedy', 'sample', 'top_k'
+sample_noise_fun:  # which noise functions to sample from?
+  - "swap"
+  - "drop"
+  - "blank"
+  - "repeat"
+  - "rule"
+
+# validation
+num_beams_t2d: 8
+num_beams_d2t: 5
+batch_size_val: 30
+do_validation: True
+
+# logging
+checkpoints: "on_epoch_end"  # 'no', 'on_training_end', or 'on_epoch_end'
+log_every_n_steps: 100  # for training metrics (evaluation is always done after each epoch)
